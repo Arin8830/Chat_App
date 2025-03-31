@@ -19,16 +19,24 @@ app.use(express.json());
 app.use(cookieParser());
 const allowedOrigins = [
   "http://localhost:3000",  // Development
-  "https://chat-app-ya9g.onrender.com", // Render Frontend
+  "https://chat-app-ya9g.onrender.com", // Render Frontend (Old?)
+  "https://chat-app-kr82.onrender.com", // Render Frontend (New?)
 ];
 
 app.use(
   cors({
-    origin: allowedOrigins,
-    credentials: true, 
-    methods: ["GET", "POST", "PUT", "DELETE"], 
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE"],
   })
 );
+
 
 
 
